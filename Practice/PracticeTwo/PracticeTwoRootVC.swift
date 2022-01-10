@@ -22,10 +22,11 @@ class PracticeTwoRootVC: UIViewController {
     
     
     private lazy var collectionView:UICollectionView = {
-        let cv = UICollectionView(frame: .zero,collectionViewLayout: UICollectionViewLayout())
-        cv.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+        let cv = UICollectionView(frame: .zero,collectionViewLayout: UICollectionViewFlowLayout())
+        cv.register(ArticleCVC.self, forCellWithReuseIdentifier: ArticleCVC.identifier)
         cv.delegate = self
         cv.dataSource = self
+        cv.backgroundColor = .systemBackground
         return cv
     }()
    
@@ -42,6 +43,7 @@ class PracticeTwoRootVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         configureUI()
         fetchArticles()
         subscribe()
@@ -50,7 +52,16 @@ class PracticeTwoRootVC: UIViewController {
     
     //MARK : Configures
     func configureUI(){
+        self.title = self.viewModel.title
         view.backgroundColor = .systemBackground
+        
+        view.addSubview(collectionView)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        collectionView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        collectionView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        
     }
     
     //MARK : Helpers
@@ -61,7 +72,9 @@ class PracticeTwoRootVC: UIViewController {
     }
     func subscribe(){
         self.articleViewModelObserver.subscribe(onNext: {articles in
-            print(articles)
+            DispatchQueue.main.async {
+                self.collectionView.reloadData()
+            }
         }).disposed(by: disposeBag)
     }
 }
@@ -72,8 +85,8 @@ extension PracticeTwoRootVC : UICollectionViewDelegate,UICollectionViewDataSourc
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
-        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ArticleCVC.identifier, for: indexPath) as! ArticleCVC
+        cell.viewModel.onNext(self.articleViewModel.value[indexPath.row])
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

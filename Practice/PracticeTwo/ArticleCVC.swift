@@ -9,8 +9,11 @@ import UIKit
 import RxSwift
 import SDWebImage
 
-class ArticleCell: UICollectionViewCell {
+class ArticleCVC: UICollectionViewCell {
     //MARK : Properties
+    
+    static let identifier = "ArticleCVC"
+    
     let disposeBag = DisposeBag()
     var viewModel = PublishSubject<ArticleViewModel>()
     
@@ -46,7 +49,10 @@ class ArticleCell: UICollectionViewCell {
         configureUI()
         subscribe()
     }
-    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.imageView.image = nil
+    }
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -66,7 +72,7 @@ class ArticleCell: UICollectionViewCell {
     
     //MARK : Configures
     func configureUI(){
-        contentView.backgroundColor = .systemBackground
+
         addSubview(imageView)
         imageView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         imageView.leftAnchor.constraint(equalTo: leftAnchor,constant: 20).isActive = true
