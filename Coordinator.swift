@@ -15,7 +15,7 @@ class Coordinator{
     }
     
     func start(){
-        let rootVC = PracticeTwoRootVC()
+        let rootVC = PracticeTwoRootVC(viewModel: RootViewModel(articleManager: ArticleManager()))
         let navigationRootVC = UINavigationController(rootViewController: rootVC)
         window.rootViewController = navigationRootVC
         window.makeKeyAndVisible()
