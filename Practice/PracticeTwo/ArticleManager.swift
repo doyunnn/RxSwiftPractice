@@ -9,7 +9,11 @@ import Foundation
 import Alamofire
 import RxSwift
 
-class ArticleManager{
+protocol ArticleManagerProtocol{
+    func fetchNews() -> Observable<[Article]>
+}
+
+class ArticleManager: ArticleManagerProtocol{
     func fetchNews() -> Observable<[Article]>{
         return Observable.create{ (observer) -> Disposable in
             self.fetchNews{ (error, articles) in
