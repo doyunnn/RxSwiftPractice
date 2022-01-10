@@ -69,6 +69,7 @@ class RxTestOneVC: UIViewController {
         }.disposed(by: bag)
         
         viewmodel.fetchItmes()
+        print("test")
     }
     
 
