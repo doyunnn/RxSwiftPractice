@@ -6,10 +6,13 @@
 //
 
 import UIKit
+import RxSwift
 
+// 뷰간 데이터 이동 연습
 class PracticeThreeRootVC: UIViewController {
 
     //MARK : Properties
+    let disposeBag = DisposeBag()
     
     private let label : UILabel = {
        let label = UILabel()
@@ -37,8 +40,9 @@ class PracticeThreeRootVC: UIViewController {
     @objc func didTapActionButton(){
         let vc = WordsVC()
         vc.navigationItem.largeTitleDisplayMode = .never
-        
-        
+        vc.seletedWord.subscribe(onNext: { [weak self] word in
+            self?.label.text = "안녕 난 \(word)야"
+        }).disposed(by: disposeBag)
         self.navigationController?.pushViewController(vc, animated: true)
     }
 

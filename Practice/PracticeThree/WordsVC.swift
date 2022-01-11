@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RxSwift
 
 class WordsVC: UIViewController {
     
@@ -35,6 +36,13 @@ class WordsVC: UIViewController {
         return button
     }()
     
+    private let seletedWordVariable = BehaviorSubject<String>(value: "var")
+    var seletedWord: Observable<String>{
+        return seletedWordVariable.asObserver()
+    }
+    
+    
+    
     //MARK : Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,6 +60,7 @@ class WordsVC: UIViewController {
 
     @objc func didTapWord(sender : UIButton){
         guard let word = sender.titleLabel?.text else {return}
+        seletedWordVariable.onNext(word)
         
     }
 
