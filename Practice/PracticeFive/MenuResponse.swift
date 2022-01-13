@@ -7,9 +7,9 @@
 
 import Foundation
 struct MenuResponse:Codable{
-    let menus : [Menu]
+    let menus : [MenuItem]
 }
-struct Menu:Codable{
+struct MenuItem:Codable{
     let name : String
     let price : Int
 }
