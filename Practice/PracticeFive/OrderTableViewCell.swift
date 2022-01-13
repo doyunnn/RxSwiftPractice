@@ -11,16 +11,21 @@ class OrderTableViewCell: UITableViewCell {
 
     
     //MARK : Properties
+    
+    var onChange : ((Int)->Void)?
+    
     private let plusButton : UIButton = {
        let button = UIButton()
         button.setTitle("+", for: .normal)
         button.setTitleColor(.black, for: .normal)
+        button.addTarget(self, action: #selector(didTapPlus), for: .touchUpInside)
         return button
     }()
     private let minusButton : UIButton = {
        let button = UIButton()
         button.setTitle("-", for: .normal)
         button.setTitleColor(.black, for: .normal)
+        button.addTarget(self, action: #selector(didTapMinus), for: .touchUpInside)
         return button
     }()
     lazy var menuNameLabel : UILabel = {
@@ -61,5 +66,13 @@ class OrderTableViewCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+    //Helpers
+    @objc func didTapPlus(){
+        print("qwe")
+        onChange?(+1)
+    }
+    @objc func didTapMinus(){
+        print("qwe")
+        onChange?(-1)
+    }
 }

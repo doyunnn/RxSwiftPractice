@@ -13,3 +13,9 @@ struct Menu:Codable{
     let price : Int
     let count : Int
 }
+extension Menu{
+    static func fromMenuItems(id: Int, item: MenuItem)->Menu{
+        return Menu(id: id, name: item.name, price: item.price, count: 0)
+        
+    }
+}

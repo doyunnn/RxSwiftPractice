@@ -11,6 +11,9 @@ class TotalPriceView: UIView {
 
     
     //MARK : Properties
+    
+    var onClear : (()->Void)?
+    
     private let titleLabel : UILabel = {
        let label = UILabel()
         label.text = "Your Orders"
@@ -27,6 +30,7 @@ class TotalPriceView: UIView {
        let button = UIButton()
         button.setTitle("clear", for: .normal)
         button.setTitleColor(.systemBlue, for: .normal)
+        button.addTarget(self, action: #selector(didTapClear), for: .touchUpInside)
         return button
     }()
     lazy var totalPriceLabel : UILabel = {
@@ -56,6 +60,11 @@ class TotalPriceView: UIView {
     }
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    //Helpers
+    @objc func didTapClear(){
+        onClear?()
     }
 
 }

@@ -7,6 +7,7 @@
 
 import Foundation
 import Alamofire
+import RxSwift
 final class MenuManager{
     static let shared = MenuManager()
     init(){}
@@ -31,4 +32,26 @@ final class MenuManager{
             }
         
     }
+    func fetchMenuItem()->Observable<[MenuItem]>{
+        return Observable.create { emitter in
+            let urlString = "https://firebasestorage.googleapis.com/v0/b/rxswiftin4hours.appspot.com/o/fried_menus.json?alt=media&token=42d5cb7e-8ec4-48f9-bf39-3049e796c936"
+            AF.request(urlString,
+                       method: .get,
+                       parameters: nil,
+                       encoding: JSONEncoding.default,
+                       headers: nil)
+                .responseDecodable(of: MenuResponse.self){ response in
+                    switch response.result{
+                    case .success(let response):
+                        emitter.onNext(response.menus)
+                    case .failure(let error):
+                        emitter.onError(error)
+                    }
+                }
+            
+            return Disposables.create()
+        }
+        
+    }
+    
 }

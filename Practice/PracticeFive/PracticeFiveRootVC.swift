@@ -64,24 +64,35 @@ class PracticeFiveRootVC: UIViewController {
             .observe(on: MainScheduler.instance)
             .bind(to: tableView.rx.items(cellIdentifier: OrderTableViewCell.identifier,
                                          cellType: OrderTableViewCell.self)){ index, item, cell in
-            
+                
+                cell.selectionStyle = .none
                 cell.menuNameLabel.text = item.name
                 cell.priceLabel.text = "\(item.price)"
                 cell.countLabel.text = "\(item.count)"
+                
+                cell.onChange = { [weak self] state in
+
+                    self?.viewModel.changeCount(item: item, state: state)
+                    
+                }
             }.disposed(by: disposeBag)
         // TotalCntLabel
         viewModel.itemsCnt
-            .map{"\($0)"}
-            .observe(on: MainScheduler.instance)
-            .bind(to: totalPriceView.totalCnt.rx.text)
+            .map{"Items \($0)"}
+            .asDriver(onErrorJustReturn: "")
+            .drive(totalPriceView.totalCnt.rx.text)
             .disposed(by: disposeBag)
         //TotalPriceLabel
         viewModel.totalPrice
-            .map{"\($0)"}
+            .map{"\($0) 원"}
             .observe(on: MainScheduler.instance)
             .bind(to: totalPriceView.totalPriceLabel.rx.text)
             .disposed(by: disposeBag)
         
+        
+//            .catchAndReturn("")
+//            .observe(on: MainScheduler.instance) -> asDriver()
+//            .bind(to: totalPriceView.totalCnt.rx.text)  -> drive()
         
         //            .subscribe(onNext: {
         //                self.totalPriceView.totalCnt.text = "\($0)"
@@ -90,16 +101,13 @@ class PracticeFiveRootVC: UIViewController {
     
     
     //MARK : Helpers
-    func fetchMenus(){
-        MenuManager.shared.fetchMenu { error, menus in
-            guard let menus = menus else{
-                return
-            }
-            
+    func didTapClear(){
+        totalPriceView.onClear = { [weak self] in
+            self?.viewModel.didTapclear()
         }
     }
     @objc func didTapOrderButton(){
-        
+     
     }
 
    
