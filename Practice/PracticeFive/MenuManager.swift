@@ -11,7 +11,7 @@ final class MenuManager{
     static let shared = MenuManager()
     init(){}
     
-    func fetchMenu(completion: @escaping((Error?, [Menu]?) -> Void)){
+    func fetchMenu(completion: @escaping((Error?, [MenuItem]?) -> Void)){
         let urlString = "https://firebasestorage.googleapis.com/v0/b/rxswiftin4hours.appspot.com/o/fried_menus.json?alt=media&token=42d5cb7e-8ec4-48f9-bf39-3049e796c936"
         guard let url = URL(string: urlString) else {
             return completion(NSError(domain: "doyun", code: 404, userInfo: nil),nil)

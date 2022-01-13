@@ -29,7 +29,7 @@ class TotalPriceView: UIView {
         button.setTitleColor(.systemBlue, for: .normal)
         return button
     }()
-    private let totalPriceLabel : UILabel = {
+    lazy var totalPriceLabel : UILabel = {
        let label = UILabel()
         label.text = "10000000"
         label.font = .boldSystemFont(ofSize: 30)

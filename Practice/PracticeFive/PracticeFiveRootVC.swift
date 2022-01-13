@@ -6,10 +6,16 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 class PracticeFiveRootVC: UIViewController {
 
     //MAKR: Properties
+    
+    let viewModel = MenuViewModel()
+    var disposeBag = DisposeBag()
+    
     private let orderButton : UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("ORDER", for: .normal)
@@ -28,16 +34,9 @@ class PracticeFiveRootVC: UIViewController {
     //MARK : Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
-        navigationItem.largeTitleDisplayMode = .always
-        title = "doyun menus"
-        
-        view.addSubview(orderButton)
-        view.addSubview(totalPriceView)
-        view.addSubview(tableView)
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.register(OrderTableViewCell.self, forCellReuseIdentifier: OrderTableViewCell.identifier)
+        defaultConfigure()
+        subscribe()
+       
     }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -48,6 +47,46 @@ class PracticeFiveRootVC: UIViewController {
     
     
     //MARK : Configure
+    func defaultConfigure(){
+        view.backgroundColor = .white
+        navigationItem.largeTitleDisplayMode = .always
+        title = "doyun menus"
+        
+        view.addSubview(orderButton)
+        view.addSubview(totalPriceView)
+        view.addSubview(tableView)
+        tableView.register(OrderTableViewCell.self, forCellReuseIdentifier: OrderTableViewCell.identifier)
+    }
+    
+    func subscribe(){
+        // TableView
+        viewModel.menuObservable
+            .observe(on: MainScheduler.instance)
+            .bind(to: tableView.rx.items(cellIdentifier: OrderTableViewCell.identifier,
+                                         cellType: OrderTableViewCell.self)){ index, item, cell in
+            
+                cell.menuNameLabel.text = item.name
+                cell.priceLabel.text = "\(item.price)"
+                cell.countLabel.text = "\(item.count)"
+            }.disposed(by: disposeBag)
+        // TotalCntLabel
+        viewModel.itemsCnt
+            .map{"\($0)"}
+            .observe(on: MainScheduler.instance)
+            .bind(to: totalPriceView.totalCnt.rx.text)
+            .disposed(by: disposeBag)
+        //TotalPriceLabel
+        viewModel.totalPrice
+            .map{"\($0)"}
+            .observe(on: MainScheduler.instance)
+            .bind(to: totalPriceView.totalPriceLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+        
+        //            .subscribe(onNext: {
+        //                self.totalPriceView.totalCnt.text = "\($0)"
+        //            }) - > bind()
+    }
     
     
     //MARK : Helpers
@@ -64,17 +103,5 @@ class PracticeFiveRootVC: UIViewController {
     }
 
    
-
-}
-extension PracticeFiveRootVC : UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: OrderTableViewCell.identifier, for: indexPath)
-        return cell
-    }
-    
 
 }

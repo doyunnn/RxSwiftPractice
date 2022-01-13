@@ -53,7 +53,7 @@ class OrderTableViewCell: UITableViewCell {
         super.layoutSubviews()
         plusButton.frame = CGRect(x: 10, y: 0, width: 50, height: 50)
         minusButton.frame = CGRect(x: plusButton.frame.width+plusButton.frame.origin.x, y: 0, width: 50, height: 50)
-        menuNameLabel.frame = CGRect(x: minusButton.frame.width+minusButton.frame.origin.x, y: 0, width: 60, height: 50)
+        menuNameLabel.frame = CGRect(x: minusButton.frame.width+minusButton.frame.origin.x, y: 0, width: 100, height: 50)
         countLabel.frame = CGRect(x: menuNameLabel.frame.width+menuNameLabel.frame.origin.x, y: 0, width: 30, height: 50)
         priceLabel.frame = CGRect(x: self.frame.width+self.frame.origin.x-100, y: 0, width: 100, height: 50)
     }
