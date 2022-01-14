@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 class OrderTableViewCell: UITableViewCell {
     static let identifier = "TableViewCell"
 
@@ -13,15 +15,16 @@ class OrderTableViewCell: UITableViewCell {
     //MARK : Properties
     
     var onChange : ((Int)->Void)?
+    var disposeBag = DisposeBag()
     
-    private let plusButton : UIButton = {
-       let button = UIButton()
+    lazy var plusButton : UIButton = {
+        let button = UIButton(type: .system)
         button.setTitle("+", for: .normal)
         button.setTitleColor(.black, for: .normal)
         button.addTarget(self, action: #selector(didTapPlus), for: .touchUpInside)
         return button
     }()
-    private let minusButton : UIButton = {
+    lazy var minusButton : UIButton = {
        let button = UIButton()
         button.setTitle("-", for: .normal)
         button.setTitleColor(.black, for: .normal)
@@ -48,8 +51,8 @@ class OrderTableViewCell: UITableViewCell {
     //MARK : Life Cycle
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        addSubview(plusButton)
-        addSubview(minusButton)
+        contentView.addSubview(plusButton)
+        contentView.addSubview(minusButton)
         addSubview(menuNameLabel)
         addSubview(countLabel)
         addSubview(priceLabel)
@@ -66,13 +69,16 @@ class OrderTableViewCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        disposeBag = DisposeBag()
+    }
     //Helpers
-    @objc func didTapPlus(){
-        print("qwe")
+    @objc func didTapPlus(_ sender : UIButton){
         onChange?(+1)
     }
     @objc func didTapMinus(){
-        print("qwe")
         onChange?(-1)
     }
 }
+

@@ -46,6 +46,7 @@ class MenuViewModel {
     }
     func changeCount(item : Menu, state: Int){
         menuObservable
+            .observe(on: MainScheduler.instance)
             .map{ menus in
                 menus.map{
                     if $0.id == item.id{

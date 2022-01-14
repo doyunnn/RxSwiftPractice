@@ -69,11 +69,10 @@ class PracticeFiveRootVC: UIViewController {
                 cell.menuNameLabel.text = item.name
                 cell.priceLabel.text = "\(item.price)"
                 cell.countLabel.text = "\(item.count)"
-                
                 cell.onChange = { [weak self] state in
 
                     self?.viewModel.changeCount(item: item, state: state)
-                    
+
                 }
             }.disposed(by: disposeBag)
         // TotalCntLabel
