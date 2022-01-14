@@ -8,10 +8,14 @@
 import Foundation
 import Alamofire
 import RxSwift
+
+
+
 final class MenuManager{
     static let shared = MenuManager()
     init(){}
     
+    // 일반
     func fetchMenu(completion: @escaping((Error?, [MenuItem]?) -> Void)){
         let urlString = "https://firebasestorage.googleapis.com/v0/b/rxswiftin4hours.appspot.com/o/fried_menus.json?alt=media&token=42d5cb7e-8ec4-48f9-bf39-3049e796c936"
         guard let url = URL(string: urlString) else {
@@ -32,6 +36,7 @@ final class MenuManager{
             }
         
     }
+    // alamofire + rxswift
     func fetchMenuItem()->Observable<[MenuItem]>{
         return Observable.create { emitter in
             let urlString = "https://firebasestorage.googleapis.com/v0/b/rxswiftin4hours.appspot.com/o/fried_menus.json?alt=media&token=42d5cb7e-8ec4-48f9-bf39-3049e796c936"
@@ -53,5 +58,20 @@ final class MenuManager{
         }
         
     }
-    
+    // rxswift refactoring
+    func fetchMenus()->Observable<[MenuItem]>{
+        return Observable.create{ observer in
+            self.fetchMenu{ (error, menuItems) in
+                if let error = error {
+                    observer.onError(error)
+                }
+                if let menuItems = menuItems {
+                    observer.onNext(menuItems)
+                }
+                observer.onCompleted()
+                
+            }
+            return Disposables.create()
+        }
+    }
 }

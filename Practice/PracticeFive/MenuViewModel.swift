@@ -19,7 +19,7 @@ class MenuViewModel {
     }
     
     init(){
-       _ = MenuManager.shared.fetchMenuItem()
+       _ = MenuManager.shared.fetchMenus()
             .map{ menuitems -> [Menu] in
                 var menus = [Menu]()
                 menuitems.enumerated().forEach{ index, item in
