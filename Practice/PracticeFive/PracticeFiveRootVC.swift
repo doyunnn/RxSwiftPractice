@@ -66,13 +66,9 @@ class PracticeFiveRootVC: UIViewController {
                                          cellType: OrderTableViewCell.self)){ index, item, cell in
                 
                 cell.selectionStyle = .none
-                cell.menuNameLabel.text = item.name
-                cell.priceLabel.text = "\(item.price)"
-                cell.countLabel.text = "\(item.count)"
+                cell.configure(with: item)
                 cell.onChange = { [weak self] state in
-
                     self?.viewModel.changeCount(item: item, state: state)
-
                 }
             }.disposed(by: disposeBag)
         // TotalCntLabel

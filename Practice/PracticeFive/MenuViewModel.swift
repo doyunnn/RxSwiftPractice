@@ -11,6 +11,8 @@ import RxCocoa
 class MenuViewModel {
     var menuObservable = BehaviorRelay<[Menu]>(value: [])
     
+    let cellviewModel = [Menu]()
+    
     lazy var itemsCnt = menuObservable.map {
         $0.map{ $0.count }.reduce(0,+)
     }

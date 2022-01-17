@@ -73,7 +73,15 @@ class OrderTableViewCell: UITableViewCell {
         super.prepareForReuse()
         disposeBag = DisposeBag()
     }
-    //Helpers
+    //MAKR : Configure
+    func configure(with viewModel : Menu){
+        self.menuNameLabel.text = viewModel.name
+        self.countLabel.text = "\(viewModel.count)"
+        self.priceLabel.text = "\(viewModel.price)"
+        
+    }
+    
+    //MAKR :Helpers
     @objc func didTapPlus(_ sender : UIButton){
         onChange?(+1)
     }
