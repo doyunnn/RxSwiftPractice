@@ -18,7 +18,8 @@ class Coordinator{
 //        let rootVC = PracticeTwoRootVC(viewModel: RootViewModel(articleManager: ArticleManager()))
 //        let rootVC = PracticeThreeRootVC()
 //        let rootVC = PracticeFourRootVC()
-        let rootVC = PracticeFiveRootVC()
+//        let rootVC = PracticeFiveRootVC()
+        let rootVC = PracticeSixRootVC()
         let navigationRootVC = UINavigationController(rootViewController: rootVC)
         window.rootViewController = navigationRootVC
         window.makeKeyAndVisible()
