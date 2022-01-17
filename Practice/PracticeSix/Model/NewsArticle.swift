@@ -6,18 +6,35 @@
 //
 
 import Foundation
-struct NewsArticleResponse:Codable{
-    let status : String
+
+// MARK: - NewsArticleResponse
+struct NewsArticleResponse: Codable {
+    let articles: [NewsArticle]
+    let status: String
     let totalResults: Int
-    let articles : [NewsArticle]
 }
 
-struct NewsArticle : Codable{
-    // JSON 형태의 데이터를 swift 구조체 형태로 변환 - Codable
-    let autor : String?
+// MARK: - NewsArticle
+struct NewsArticle: Codable {
+    let source: Source
+    let author : String?
     let title : String?
-    let description : String?
-    let url : String?
+    let articleDescription: String?
+    let url: String?
     let urlToImage: String?
     let publishedAt: String?
+    let content: String?
+    enum CodingKeys: String, CodingKey {
+        case source, author, title
+        case articleDescription = "description"
+        case url, urlToImage, publishedAt, content
+    }
+
+}
+
+
+// MARK: - Source
+struct Source: Codable {
+    let id: String?
+    let name: String?
 }

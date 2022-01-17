@@ -33,7 +33,7 @@ class NewsMnager {
     
     
     private func fetchArticles(completion: @escaping((Error?, [NewsArticle]?) -> Void)){
-        let urlString = "https://newsapi.org/v2/everything?q=apple&from=2022-01-09&to=2022-01-09&sortBy=popularity&apiKey=d6734920e71d413b9a73a1dd694ed445"
+        let urlString = "https://newsapi.org/v2/top-headlines?sources=techcrunch&apiKey=d6734920e71d413b9a73a1dd694ed445"
         guard let url = URL(string: urlString) else {
             return completion(NSError(domain: "doyun", code: 404, userInfo: nil),nil)
         }

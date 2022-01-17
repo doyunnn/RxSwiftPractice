@@ -12,8 +12,10 @@ class NewsViewModel {
     
     let newsObservable = BehaviorRelay<[NewsArticle]>(value: [])
     
+    lazy var articleCnt = newsObservable.map {$0.count}
+    
     init(){
-        let ob = NewsMnager.shared.fetchArticles()
+        _ = NewsMnager.shared.fetchArticles()
             .map{$0}
             .take(1)
             .bind(to: newsObservable)
