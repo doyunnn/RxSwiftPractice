@@ -67,3 +67,16 @@ extension UIImageView {
     }
 
 }
+extension UIViewController {
+    func setInitNavigationBar() {
+        navigationController?.isNavigationBarHidden = false
+        navigationController?.navigationBar.tintColor = .black
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+        navigationController?.navigationBar.isTranslucent = true
+        navigationController?.navigationBar.backgroundColor = .clear
+
+
+    }
+
+}

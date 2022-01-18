@@ -21,4 +21,9 @@ class NewsViewModel {
             .bind(to: newsObservable)
         
     }
+    
+    func didTapBookMark(){
+        print("bookMarked")
+        
+    }
 }

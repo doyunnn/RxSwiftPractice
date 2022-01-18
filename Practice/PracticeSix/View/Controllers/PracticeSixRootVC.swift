@@ -26,7 +26,7 @@ class PracticeSixRootVC: UIViewController {
     private let moreButton : UIButton = {
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: 82, height: 0))
         button.setImage(UIImage(systemName: "chevron.right",withConfiguration: UIImage.SymbolConfiguration(pointSize: 16,weight: .bold)), for: .normal)
-        button.imageEdgeInsets = UIEdgeInsets(top: 0,left: 70, bottom: 0, right: 0)
+        button.imageEdgeInsets = UIEdgeInsets(top: 0,left: 72, bottom: 0, right: 0)
         button.imageView?.contentMode = .scaleAspectFit
         button.setTitle("더 보기", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .bold)
@@ -152,9 +152,9 @@ extension PracticeSixRootVC : FSPagerViewDelegate, FSPagerViewDataSource{
     }
     func pagerView(_ pagerView: FSPagerView, didSelectItemAt index: Int) {
         pagerView.deselectItem(at: index, animated: true)
-//        let vc = ArticleViewController(article: articles[index],scrapArticle: nil)
-//        vc.navigationItem.largeTitleDisplayMode = .never
-//        navigationController?.pushViewController(vc, animated: true)
+        let vc = ArticleVC(viewModel: viewModel, index: index)
+        vc.navigationItem.largeTitleDisplayMode = .never
+        navigationController?.pushViewController(vc, animated: true)
     }
     func pagerViewWillEndDragging(_ pagerView: FSPagerView, targetIndex: Int) {
         viewModel.newsObservable
@@ -165,7 +165,6 @@ extension PracticeSixRootVC : FSPagerViewDelegate, FSPagerViewDataSource{
                 }
                 self?.topView.setImage(with: image)
             }).disposed(by: disposeBag)
-            
 
     }
 }
