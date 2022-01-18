@@ -114,14 +114,13 @@ class PracticeSixRootVC: UIViewController {
     func subscribe(){
 
         
-        viewModel.newsObservable
+        viewModel.headLineNewsObservable
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] articles in
                 guard let image = articles.first?.urlToImage else{
                     return
                 }
                 self?.pagerView.reloadData()
-                self?.modelCnt = articles.count
                 self?.topView.setImage(with: image)
             }).disposed(by: disposeBag)
 
@@ -132,6 +131,10 @@ class PracticeSixRootVC: UIViewController {
         
     }
     @objc func didTapMoreContentsButton(){
+        let vc = MoreContentsVC()
+        vc.navigationItem.largeTitleDisplayMode = .always
+        vc.title = "News"
+        self.navigationController?.pushViewController(vc, animated: true)
         
     }
 }
@@ -139,7 +142,7 @@ class PracticeSixRootVC: UIViewController {
 extension PracticeSixRootVC : FSPagerViewDelegate, FSPagerViewDataSource{
 
     func numberOfItems(in pagerView: FSPagerView) -> Int {
-        return modelCnt
+        return viewModel.headLineNewsObservable.value.count
     }
     
     func pagerView(_ pagerView: FSPagerView, cellForItemAt index: Int) -> FSPagerViewCell {
@@ -157,7 +160,7 @@ extension PracticeSixRootVC : FSPagerViewDelegate, FSPagerViewDataSource{
         navigationController?.pushViewController(vc, animated: true)
     }
     func pagerViewWillEndDragging(_ pagerView: FSPagerView, targetIndex: Int) {
-        viewModel.newsObservable
+        viewModel.headLineNewsObservable
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] articles in
                 guard let image = articles[targetIndex].urlToImage else{

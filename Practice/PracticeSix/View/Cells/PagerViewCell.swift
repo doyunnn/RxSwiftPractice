@@ -79,7 +79,7 @@ class PagerViewCell: FSPagerViewCell{
     }
     
     func configure(with viewModel : HeadLineNewsViewModel,index : Int){
-        viewModel.newsObservable
+        viewModel.headLineNewsObservable
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] articles in
             guard let urlToImage = articles[index].urlToImage,

@@ -50,7 +50,6 @@ class ArticleVC: UIViewController {
     //MARK : Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         configure()
         subscribe()
     }
@@ -70,7 +69,7 @@ class ArticleVC: UIViewController {
      
     }
     func subscribe(){
-        viewModel.newsObservable
+        viewModel.headLineNewsObservable
             .observe(on: MainScheduler.instance)
             .map{[$0[self.index]]}
             .bind(to: tableView.rx.items(cellIdentifier: ArticleTableViewCell.identifier, cellType: ArticleTableViewCell.self)){ index, item, cell in
