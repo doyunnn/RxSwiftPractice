@@ -14,9 +14,9 @@ class NewsMnager {
     static let shared = NewsMnager()
     init(){}
     
-    func fetchArticles() -> Observable<[NewsArticle]> {
+    func fetchHeadLineArticles() -> Observable<[NewsArticle]> {
         return Observable.create { observer -> Disposable in
-            self.fetchArticles(){ error, articles in
+            self.fetchHeadLineArticles(){ error, articles in
                 if let error = error {
                     observer.onError(error)
                 }
@@ -32,7 +32,7 @@ class NewsMnager {
     
     
     
-    private func fetchArticles(completion: @escaping((Error?, [NewsArticle]?) -> Void)){
+    private func fetchHeadLineArticles(completion: @escaping((Error?, [NewsArticle]?) -> Void)){
         let urlString = "https://newsapi.org/v2/top-headlines?sources=techcrunch&apiKey=d6734920e71d413b9a73a1dd694ed445"
         guard let url = URL(string: urlString) else {
             return completion(NSError(domain: "doyun", code: 404, userInfo: nil),nil)

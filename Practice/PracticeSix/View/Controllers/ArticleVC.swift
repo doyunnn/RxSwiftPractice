@@ -11,12 +11,12 @@ import RxSwift
 class ArticleVC: UIViewController {
     //MAKR : Properties
     
-    let viewModel : NewsViewModel
+    let viewModel : HeadLineNewsViewModel
     let index : Int
     
     var disposeBag = DisposeBag()
     
-    init(viewModel : NewsViewModel, index : Int){
+    init(viewModel : HeadLineNewsViewModel, index : Int){
         self.viewModel = viewModel
         self.index = index
         super.init(nibName: nil, bundle: nil)

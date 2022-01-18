@@ -12,7 +12,7 @@ import FSPagerView
 class PracticeSixRootVC: UIViewController {
 
     //MARK : Properties
-    let viewModel = NewsViewModel()
+    let viewModel = HeadLineNewsViewModel()
     let disposeBag = DisposeBag()
     
     private var modelCnt = 0

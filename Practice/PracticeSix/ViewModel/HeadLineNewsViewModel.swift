@@ -8,14 +8,14 @@
 import Foundation
 import RxSwift
 import RxCocoa
-class NewsViewModel {
+class HeadLineNewsViewModel {
     
     let newsObservable = BehaviorRelay<[NewsArticle]>(value: [])
     
     lazy var articleCnt = newsObservable.map {$0.count}
     
     init(){
-        _ = NewsMnager.shared.fetchArticles()
+        _ = NewsMnager.shared.fetchHeadLineArticles()
             .map{$0}
             .take(1)
             .bind(to: newsObservable)

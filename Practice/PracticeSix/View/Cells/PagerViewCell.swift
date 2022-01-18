@@ -78,7 +78,7 @@ class PagerViewCell: FSPagerViewCell{
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(with viewModel : NewsViewModel,index : Int){
+    func configure(with viewModel : HeadLineNewsViewModel,index : Int){
         viewModel.newsObservable
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] articles in
