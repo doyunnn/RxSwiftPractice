@@ -155,7 +155,9 @@ extension PracticeSixRootVC : FSPagerViewDelegate, FSPagerViewDataSource{
     }
     func pagerView(_ pagerView: FSPagerView, didSelectItemAt index: Int) {
         pagerView.deselectItem(at: index, animated: true)
-        let vc = ArticleVC(viewModel: viewModel, index: index)
+        guard let vc = ArticleVC(headLineViewModel: viewModel, index: index) else{
+            return
+        }
         vc.navigationItem.largeTitleDisplayMode = .never
         navigationController?.pushViewController(vc, animated: true)
     }

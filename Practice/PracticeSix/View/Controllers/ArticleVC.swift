@@ -7,20 +7,32 @@
 
 import UIKit
 import RxSwift
-
+import RxCocoa
 class ArticleVC: UIViewController {
     //MAKR : Properties
     
-    let viewModel : HeadLineNewsViewModel
+    var headLineViewModel : HeadLineNewsViewModel?
+    var newsViewModel : NewsViewModel?
     let index : Int
+    var section : Int?
     
     var disposeBag = DisposeBag()
     
-    init(viewModel : HeadLineNewsViewModel, index : Int){
-        self.viewModel = viewModel
+    init?(headLineViewModel : HeadLineNewsViewModel, index : Int) {
+        self.headLineViewModel = headLineViewModel
         self.index = index
         super.init(nibName: nil, bundle: nil)
+        
     }
+    init?(newsViewModel: NewsViewModel, section : Int, index : Int) {
+       
+        self.index = index
+        self.newsViewModel = newsViewModel
+        self.section = section
+        super.init(nibName: nil, bundle: nil)
+        
+    }
+
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -69,20 +81,33 @@ class ArticleVC: UIViewController {
      
     }
     func subscribe(){
-        viewModel.headLineNewsObservable
-            .observe(on: MainScheduler.instance)
-            .map{[$0[self.index]]}
-            .bind(to: tableView.rx.items(cellIdentifier: ArticleTableViewCell.identifier, cellType: ArticleTableViewCell.self)){ index, item, cell in
-                guard let image = item.urlToImage else{
-                    return
-                }
-                self.headerView.headerView.setImage(with: image)
-                cell.configure(with: item)
-                cell.onBookMark = {
-                    self.viewModel.didTapBookMark()
-                }
-            }.disposed(by: disposeBag)
-        
+        if let headLineViewModel = headLineViewModel {
+            bindTableView(observable: headLineViewModel.headLineNewsObservable)
+            
+        }else if let newsViewModel = newsViewModel{
+            guard let section = section else {
+                return
+            }
+            switch section {
+            case 0 :
+                bindTableView(observable: newsViewModel.appleNewsObservable)
+                break
+            case 1:
+                bindTableView(observable: newsViewModel.teslaNewsObservable)
+                break
+            case 2:
+                bindTableView(observable: newsViewModel.bitcoinNewsObservable)
+                break
+            case 3:
+                bindTableView(observable: newsViewModel.businessNewsObservable)
+                break
+            case 4:
+                bindTableView(observable: newsViewModel.techNewsObservable)
+                break
+            default: break
+            }
+          
+        }
         self.tableView.rx.didScroll
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { _ in
@@ -98,5 +123,21 @@ class ArticleVC: UIViewController {
     @objc func didTapBackButton(){
         self.navigationController?.popViewController(animated: true)
     }
-
+    
+    func bindTableView(observable : BehaviorRelay<[NewsArticle]>){
+        observable
+            .observe(on: MainScheduler.instance)
+            .map{[$0[self.index]]}
+            .bind(to: tableView.rx.items(cellIdentifier: ArticleTableViewCell.identifier, cellType: ArticleTableViewCell.self)){ index, item, cell in
+                guard let image = item.urlToImage else{
+                    return
+                }
+                self.headerView.headerView.setImage(with: image)
+                cell.configure(with: item)
+                cell.onBookMark = {
+                    self.headLineViewModel?.didTapBookMark()
+                    self.newsViewModel?.didTapBookMark()
+                }
+            }.disposed(by: disposeBag)
+    }
 }

@@ -112,23 +112,28 @@ class CustomToggleView: UIView {
     }
     @objc func didTapItem1(_ sender : UIButton){
         delegate?.item1ButtonTaped()
-        update(for: .item1,sender:sender)
+        update(for: .item1)
+        self.changeButtonColor(sender: sender)
     }
     @objc func didTapItem2(_ sender : UIButton){
         delegate?.item2ButtonTaped()
-        update(for: .item2,sender:sender)
+        update(for: .item2)
+        self.changeButtonColor(sender: sender)
     }
     @objc func didTapItem3(_ sender : UIButton){
         delegate?.item3ButtonTaped()
-        update(for: .item3,sender:sender)
+        update(for: .item3)
+        self.changeButtonColor(sender: sender)
    }
     @objc func didTapItem4(_ sender : UIButton){
         delegate?.item4ButtonTaped()
-        update(for: .item4,sender:sender)
+        update(for: .item4)
+        self.changeButtonColor(sender: sender)
     }
     @objc func didTapItem5(_ sender : UIButton){
         delegate?.item5ButtonTaped()
-        update(for: .item5,sender:sender)
+        update(for: .item5)
+        self.changeButtonColor(sender: sender)
     }
     func layoutIndicator(){
         let indicatorHegiht: CGFloat = 3
@@ -148,9 +153,9 @@ class CustomToggleView: UIView {
         }
     }
     
-    func update(for state: State,sender : UIButton){
+    func update(for state: State){
         self.state = state
-        self.changeButtonColor(sender: sender)
+        
         UIView.animate(withDuration: 0.2) {
             self.layoutIndicator()
         

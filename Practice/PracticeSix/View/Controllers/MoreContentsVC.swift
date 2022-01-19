@@ -145,6 +145,14 @@ extension MoreContentsVC : UITableViewDelegate, UITableViewDataSource {
         return cell
        
     }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        guard let vc = ArticleVC(newsViewModel: viewModel,section: indexPath.section, index: indexPath.row) else{
+            return
+        }
+        vc.navigationItem.largeTitleDisplayMode = .never
+        navigationController?.pushViewController(vc, animated: true)
+    }
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 54
     }

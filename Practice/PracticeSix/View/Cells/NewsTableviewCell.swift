@@ -15,10 +15,11 @@ class NewsTableviewCell: UITableViewCell {
       var viewModel = PublishSubject<NewsArticle>()
       var disposeBag = DisposeBag()
       
-      
+      var onBookMark : (()->Void)?
+    
       lazy var contentImage : UIImageView = {
          let view = UIImageView()
-          view.backgroundColor = .white
+          view.backgroundColor = .lightGray
           view.layer.cornerRadius = 10
           view.layer.masksToBounds = true
           view.translatesAutoresizingMaskIntoConstraints = false
@@ -135,6 +136,6 @@ class NewsTableviewCell: UITableViewCell {
         }).disposed(by: disposeBag)
     }
     @objc func didTapBookMarkButton(){
-        
+        onBookMark?()
     }
 }

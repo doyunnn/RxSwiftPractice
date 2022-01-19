@@ -10,7 +10,7 @@ import RxSwift
 import RxCocoa
 
 class NewsViewModel {
-    
+    //MAKR: Properties
     let appleNewsObservable = BehaviorRelay<[NewsArticle]>(value: [])
     let teslaNewsObservable = BehaviorRelay<[NewsArticle]>(value: [])
     let bitcoinNewsObservable = BehaviorRelay<[NewsArticle]>(value: [])
@@ -26,7 +26,7 @@ class NewsViewModel {
         bindtechNews()
     }
     
-    
+    //MARK : Helpers
     func bindAppleNews(){
         _ = NewsMnager.shared.fetchAppleArticles()
             .map{
@@ -102,5 +102,10 @@ class NewsViewModel {
     }
     func didTapTech(tableView : UITableView){
         tableView.scrollToRow(at: IndexPath(row: 0, section: 4), at: UITableView.ScrollPosition.top, animated: true)
+    }
+    
+    func didTapBookMark(){
+        print("bookMarked")
+        
     }
 }
