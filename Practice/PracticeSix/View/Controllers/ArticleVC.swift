@@ -52,13 +52,14 @@ class ArticleVC: UIViewController {
         view.backgroundColor = .blue
         return view
     }()
-    lazy var barButton : UIBarButtonItem = {
+    lazy var leftBbarButton : UIBarButtonItem = {
         let barButton = UIBarButtonItem(image: UIImage(systemName: ""), style: .done, target: self, action: #selector(didTapBackButton))
         barButton.image = UIImage(systemName: "chevron.backward.circle.fill",withConfiguration: UIImage.SymbolConfiguration(pointSize: 20,weight: .bold))
         barButton.imageInsets = UIEdgeInsets(top: 0, left: -7, bottom: 0, right: 0)
         barButton.tintColor = .lightGray
         return barButton
     }()
+
     //MARK : Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,7 +71,8 @@ class ArticleVC: UIViewController {
     //MARK : Configure
     func configure(){
         self.setInitNavigationBar()
-        self.navigationItem.leftBarButtonItem = barButton
+        self.navigationItem.leftBarButtonItem = leftBbarButton
+
         view.addSubview(tableView)
         tableView.tableHeaderView = headerView
         
@@ -123,7 +125,7 @@ class ArticleVC: UIViewController {
     @objc func didTapBackButton(){
         self.navigationController?.popViewController(animated: true)
     }
-    
+
     func bindTableView(observable : BehaviorRelay<[NewsArticle]>){
         observable
             .observe(on: MainScheduler.instance)

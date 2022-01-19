@@ -172,5 +172,29 @@ class NewsMnager {
             return Disposables.create()
         }
     }
+    func searchArticles(searchWord: String) ->Observable<[NewsArticle]>{
+        return Observable.create{ observer -> Disposable in
+            let date = Date().toString()
+            let urlString = "https://newsapi.org/v2/everything?from=\(date)&sortBy=popularity&apiKey=d6734920e71d413b9a73a1dd694ed445&q=\(searchWord)"
+
+            AF.request(urlString,
+                       method: .get,
+                       parameters: nil,
+                       encoding: JSONEncoding.default,
+                       headers: nil)
+                .responseDecodable(of: NewsArticleResponse.self){ response in
+                    if let error = response.error{
+                        print("search")
+                        observer.onError(error)
+                    }
+                    if let articles = response.value?.articles{
+                        observer.onNext(articles)
+                    }
+                    observer.onCompleted()
+                }
+
+            return Disposables.create()
+        }
+    }
     
 }

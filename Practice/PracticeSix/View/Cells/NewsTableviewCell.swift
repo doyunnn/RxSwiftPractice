@@ -135,6 +135,15 @@ class NewsTableviewCell: UITableViewCell {
             self?.publishedAt.text = publishedAt
         }).disposed(by: disposeBag)
     }
+    func configure(with model : NewsArticle ){
+        guard let image = model.urlToImage else{
+            return
+        }
+        self.contentImage.setImage(with: image)
+        self.author.text = model.author
+        self.title.text = model.title
+        self.publishedAt.text = model.publishedAt
+    }
     @objc func didTapBookMarkButton(){
         onBookMark?()
     }

@@ -23,11 +23,17 @@ class MoreContentsVC: UIViewController {
         return view
     }()
     
-    lazy var barButton : UIBarButtonItem = {
+    lazy var leftBarButton : UIBarButtonItem = {
         let barButton = UIBarButtonItem(image: UIImage(systemName: ""), style: .done, target: self, action: #selector(didTapBackButton))
         barButton.image = UIImage(systemName: "chevron.backward",withConfiguration: UIImage.SymbolConfiguration(pointSize: 18,weight: .medium))
-        barButton.imageInsets = UIEdgeInsets(top: 0, left: -7, bottom: 0, right: 0)
+        barButton.imageInsets = UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 0)
         barButton.tintColor = .lightGray
+        return barButton
+    }()
+    lazy var rightBarButton : UIBarButtonItem = {
+        let barButton = UIBarButtonItem(image: UIImage(systemName: ""), style: .done, target: self, action: #selector(didTapSearchButton))
+        barButton.image = UIImage(systemName: "magnifyingglass",withConfiguration: UIImage.SymbolConfiguration(pointSize: 16,weight: .medium))
+        barButton.tintColor = .black
         return barButton
     }()
     
@@ -54,7 +60,8 @@ class MoreContentsVC: UIViewController {
     //MARK : Configure
     func defaultConfigure(){
         self.setInitNavigationBar()
-        self.navigationItem.leftBarButtonItem = barButton
+        self.navigationItem.leftBarButtonItem = leftBarButton
+        self.navigationItem.rightBarButtonItem = rightBarButton
         view.backgroundColor = .white
         
         view.addSubview(topToggleView)
@@ -76,24 +83,24 @@ class MoreContentsVC: UIViewController {
     func subscribe(){
         viewModel.appleNewsObservable.asObservable()
             .subscribe(onNext: { _ in
-                self.tableView.reloadData()
+                self.tableView.reloadSections(IndexSet(0...0), with: .automatic)
             }).disposed(by: disposeBag)
         
         viewModel.teslaNewsObservable.asObservable()
             .subscribe(onNext: { _ in
-                self.tableView.reloadData()
+                self.tableView.reloadSections(IndexSet(1...1), with: .automatic)
             }).disposed(by: disposeBag)
         viewModel.bitcoinNewsObservable.asObservable()
             .subscribe(onNext: { _ in
-                self.tableView.reloadData()
+                self.tableView.reloadSections(IndexSet(2...2), with: .automatic)
             }).disposed(by: disposeBag)
         viewModel.businessNewsObservable.asObservable()
             .subscribe(onNext: { _ in
-                self.tableView.reloadData()
+                self.tableView.reloadSections(IndexSet(3...3), with: .automatic)
             }).disposed(by: disposeBag)
         viewModel.techNewsObservable.asObservable()
             .subscribe(onNext: { _ in
-                self.tableView.reloadData()
+                self.tableView.reloadSections(IndexSet(4...4), with: .automatic)
             }).disposed(by: disposeBag)
 
       
@@ -102,7 +109,12 @@ class MoreContentsVC: UIViewController {
     @objc func didTapBackButton(){
         self.navigationController?.popViewController(animated: true)
     }
-  
+    @objc func didTapSearchButton(){
+        let vc = SearchVC()
+        vc.modalPresentationStyle = .fullScreen
+        self.present(vc, animated: true, completion: nil)
+        
+    }
 
 }
 extension MoreContentsVC : UITableViewDelegate, UITableViewDataSource {

@@ -68,6 +68,17 @@ extension UIImageView {
 
 }
 extension UIViewController {
+    // MARK: 빈 화면을 눌렀을 때 키보드가 내려가도록 처리
+    func dismissKeyboardWhenTappedAround() {
+        let tap: UITapGestureRecognizer =
+            UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        self.view.addGestureRecognizer(tap)
+    }
+    
+    @objc func dismissKeyboard() {
+        self.view.endEditing(false)
+    }
     func setInitNavigationBar() {
         navigationController?.isNavigationBarHidden = false
         navigationController?.navigationBar.tintColor = .black
@@ -75,7 +86,11 @@ extension UIViewController {
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.isTranslucent = true
         navigationController?.navigationBar.backgroundColor = .clear
-
+        let attrs = [
+            NSAttributedString.Key.foregroundColor: UIColor.black,
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 20, weight: .bold)
+        ]
+        navigationController?.navigationBar.titleTextAttributes = attrs
 
     }
 

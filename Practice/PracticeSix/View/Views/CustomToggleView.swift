@@ -112,27 +112,27 @@ class CustomToggleView: UIView {
     }
     @objc func didTapItem1(_ sender : UIButton){
         delegate?.item1ButtonTaped()
-        update(for: .item1)
+        update(for: .item1,sender: sender)
         self.changeButtonColor(sender: sender)
     }
     @objc func didTapItem2(_ sender : UIButton){
         delegate?.item2ButtonTaped()
-        update(for: .item2)
+        update(for: .item2,sender: sender)
         self.changeButtonColor(sender: sender)
     }
     @objc func didTapItem3(_ sender : UIButton){
         delegate?.item3ButtonTaped()
-        update(for: .item3)
+        update(for: .item3,sender: sender)
         self.changeButtonColor(sender: sender)
    }
     @objc func didTapItem4(_ sender : UIButton){
         delegate?.item4ButtonTaped()
-        update(for: .item4)
+        update(for: .item4,sender: sender)
         self.changeButtonColor(sender: sender)
     }
     @objc func didTapItem5(_ sender : UIButton){
         delegate?.item5ButtonTaped()
-        update(for: .item5)
+        update(for: .item5,sender: sender)
         self.changeButtonColor(sender: sender)
     }
     func layoutIndicator(){
@@ -153,28 +153,28 @@ class CustomToggleView: UIView {
         }
     }
     
-    func update(for state: State){
+    func update(for state: State, sender: UIButton){
         self.state = state
         
-        UIView.animate(withDuration: 0.2) {
+        UIView.animate(withDuration: 0.1) {
             self.layoutIndicator()
-        
+            DispatchQueue.main.async {
+                for button in self.buttons{
+                    if sender == button {
+                        // tapped button
+                        button.setTitleColor(.black, for: .normal)
+                        button.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .semibold)
+                    }else {
+                        button.setTitleColor(.gray, for: .normal)
+                        button.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .regular)
+                    }
+                }
+            }
         }
         
     }
     func changeButtonColor(sender: UIButton) {
-        DispatchQueue.main.async {
-            for button in self.buttons{
-                if sender == button {
-                    // tapped button
-                    button.setTitleColor(.black, for: .normal)
-                    button.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .semibold)
-                }else {
-                    button.setTitleColor(.gray, for: .normal)
-                    button.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .regular)
-                }
-            }
-        }
+       
         
     }
 
