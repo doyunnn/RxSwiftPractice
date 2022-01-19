@@ -7,8 +7,12 @@
 
 import Foundation
 import UIKit
+import GoogleSignIn
+
 class Coordinator{
     let window : UIWindow
+    
+    
     
     init(window : UIWindow){
         self.window = window
@@ -19,8 +23,14 @@ class Coordinator{
 //        let rootVC = PracticeThreeRootVC()
 //        let rootVC = PracticeFourRootVC()
 //        let rootVC = PracticeFiveRootVC()
-        let rootVC = PracticeSixRootVC()
-        let navigationRootVC = UINavigationController(rootViewController: rootVC)
+        let vc : UIViewController
+        if GIDSignIn.sharedInstance()?.currentUser != nil{
+            vc = PracticeSixRootVC()
+        }else{
+            vc = LoginVC()
+        }
+        
+        let navigationRootVC = UINavigationController(rootViewController: vc)
         window.rootViewController = navigationRootVC
         window.makeKeyAndVisible()
     }
