@@ -20,10 +20,10 @@ class NewsViewModel {
     
     init(){
         bindAppleNews()
-        bindTeslaNews()
-        bindbitcoinNews()
-        bindbusinessNews()
-        bindtechNews()
+//        bindTeslaNews()
+//        bindbitcoinNews()
+//        bindbusinessNews()
+//        bindtechNews()
     }
     
     //MARK : Helpers

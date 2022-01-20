@@ -24,12 +24,12 @@ class Coordinator{
 //        let rootVC = PracticeFourRootVC()
 //        let rootVC = PracticeFiveRootVC()
         let vc : UIViewController
-        if GIDSignIn.sharedInstance()?.currentUser != nil{
-            vc = PracticeSixRootVC()
-        }else{
-            vc = LoginVC()
-        }
-        
+//        if GIDSignIn.sharedInstance()?.currentUser != nil{
+//            vc = PracticeSixRootVC()
+//        }else{
+//            vc = LoginVC()
+//        }
+        vc = PracticeSixRootVC()
         let navigationRootVC = UINavigationController(rootViewController: vc)
         window.rootViewController = navigationRootVC
         window.makeKeyAndVisible()

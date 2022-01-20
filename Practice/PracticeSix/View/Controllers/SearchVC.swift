@@ -44,10 +44,18 @@ class SearchVC: UIViewController {
     
     private let cancelButton : UIButton = {
        let button = UIButton()
-        button.setTitle("취소", for: .normal)
+        button.setTitle("닫기", for: .normal)
         button.setTitleColor(.darkGray, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 15, weight: .semibold)
         button.addTarget(self, action: #selector(didTapCancelButton), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    private let deleteButton : UIButton = {
+       let button = UIButton()
+        button.setImage(UIImage(systemName: "multiply.circle.fill"), for: .normal)
+        button.tintColor = .darkGray
+        button.addTarget(self, action: #selector(didTapDeleteButton), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -122,9 +130,15 @@ class SearchVC: UIViewController {
         cancelButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
         cancelButton.heightAnchor.constraint(equalToConstant: 18).isActive = true
         
+        searchBar.addSubview(deleteButton)
+        deleteButton.rightAnchor.constraint(equalTo: cancelButton.leftAnchor).isActive = true
+        deleteButton.centerYAnchor.constraint(equalTo: searchBar.centerYAnchor).isActive = true
+        deleteButton.widthAnchor.constraint(equalToConstant: 20).isActive = true
+        deleteButton.heightAnchor.constraint(equalToConstant: 18).isActive = true
+        
         searchBar.addSubview(searchField)
         searchField.leftAnchor.constraint(equalTo: line.rightAnchor,constant: 10).isActive = true
-        searchField.rightAnchor.constraint(equalTo: cancelButton.leftAnchor,constant: -10).isActive = true
+        searchField.rightAnchor.constraint(equalTo: deleteButton.leftAnchor,constant: -5).isActive = true
         searchField.centerYAnchor.constraint(equalTo: searchBar.centerYAnchor).isActive = true
 
         tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
@@ -136,30 +150,23 @@ class SearchVC: UIViewController {
         viewModel.searchObservable
             .observe(on: MainScheduler.instance)
             .bind(to: tableView.rx.items(cellIdentifier: NewsTableviewCell.identifier, cellType: NewsTableviewCell.self)){ index, item, cell in
-
                 cell.configure(with: item)
             }.disposed(by: disposeBag)
         searchField.rx.controlEvent(.editingDidEndOnExit)
             .subscribe(onNext: { _ in
-                print(self.searchField.text ?? "")
-                
+                self.viewModel.search(searchWord: self.searchField.text ?? "")
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
             }).disposed(by: disposeBag)
     }
     //MARK : Helpers
     @objc func didTapCancelButton(){
         self.dismiss(animated: true, completion: nil)
     }
-    func ser(){
-        self.searchField.rx.text
-            .orEmpty
-            .subscribe(onNext: { text in
-                
-                print(text)
-                self.viewModel.search(searchWord: text)
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                }
-            }).disposed(by: disposeBag)
+    @objc func didTapDeleteButton(){
+        viewModel.deleteSearchWord(textField: self.searchField)
     }
+
 }
 

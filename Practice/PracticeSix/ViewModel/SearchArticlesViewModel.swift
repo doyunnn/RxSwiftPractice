@@ -20,4 +20,7 @@ class SearchArticlesViewModel {
                 self.searchObservable.accept($0)
                 })
     }
+    public func deleteSearchWord(textField: UITextField){
+        textField.text = ""
+    }
 }
