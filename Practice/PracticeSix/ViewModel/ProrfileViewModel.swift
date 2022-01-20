@@ -7,6 +7,7 @@
 
 import Foundation
 import GoogleSignIn
+import FirebaseAuth
 class ProfileViewModel {
     
     
@@ -14,7 +15,15 @@ class ProfileViewModel {
         
     }
     
-    public func logout(){
-        
+    public func logout(vc: UIViewController){
+        AuthManager.shared.signOut { result in
+            guard result else {return}
+            DispatchQueue.main.async {
+                let loginVC = LoginVC()
+                loginVC.modalPresentationStyle = .fullScreen
+                vc.present(loginVC, animated: true, completion: nil)
+            }
+        }
+        print("Signed out")
     }
 }

@@ -66,7 +66,6 @@ class MyPageVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         defaultConfigure()
-        didTapLogout()
         didTapBookMarkView()
     }
     
@@ -115,7 +114,7 @@ class MyPageVC: UIViewController {
     
     //MAKR: Helper
     @objc func didTapLogout(){
-        viewModel.logout()
+        viewModel.logout(vc: self)
     }
     
     func didTapBookMarkView() {

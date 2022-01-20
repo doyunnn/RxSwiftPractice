@@ -20,6 +20,8 @@ class BookMarkListVC: UIViewController {
     
     //MARK : Configure
     func dafaultConfigure(){
+        self.setInitNavigationBar()
+        title = "BookMarkList"
         view.backgroundColor = .white
     }
     

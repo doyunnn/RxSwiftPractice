@@ -10,7 +10,7 @@ import RxSwift
 import Alamofire
 
 
-class NewsMnager {
+final class NewsMnager {
     static let shared = NewsMnager()
     init(){}
     

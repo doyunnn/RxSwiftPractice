@@ -130,7 +130,6 @@ class PracticeSixRootVC: UIViewController {
     @objc func didTapProfileButton(){
         let vc = MyPageVC()
         let navi = UINavigationController(rootViewController: vc)
-        
         self.navigationController?.present(navi, animated: true, completion: nil)
     }
     @objc func didTapMoreContentsButton(){

@@ -39,9 +39,24 @@ class LoginVC: UIViewController {
         loginLabel.bottomAnchor.constraint(equalTo: googleButton.topAnchor,constant: -50).isActive = true
         loginLabel.leftAnchor.constraint(equalTo: view.leftAnchor,constant: 20).isActive = true
         loginLabel.rightAnchor.constraint(equalTo: view.rightAnchor,constant: -20).isActive = true
+        GIDSignIn.sharedInstance()?.delegate = self
         GIDSignIn.sharedInstance()?.presentingViewController = self
     }
     
     //MARK : Helpers
 
+}
+extension LoginVC : GIDSignInDelegate{
+    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
+        AuthManager.shared.signIn(user: user) { result in
+            guard result else{return}
+            DispatchQueue.main.async {
+                let vc = PracticeSixRootVC()
+                let navi = UINavigationController(rootViewController: vc)
+                navi.modalPresentationStyle = .fullScreen
+                navi.navigationItem.largeTitleDisplayMode = .never
+                self.navigationController?.present(navi, animated: true, completion: nil)
+            }
+        }
+    }
 }
