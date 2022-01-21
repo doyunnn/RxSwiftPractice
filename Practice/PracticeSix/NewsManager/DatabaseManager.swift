@@ -7,7 +7,7 @@
 
 import Foundation
 import FirebaseFirestore
-
+import RxSwift
 
 final class DatabaseManager {
     static let shared = DatabaseManager()
@@ -15,8 +15,10 @@ final class DatabaseManager {
     private let databese = Firestore.firestore()
     
     private init(){}
+    private let disposeBag = DisposeBag()
+    
     //MARK : Post & User
-    public func insert(with article: NewsArticle,email: String, completion: @escaping (Bool)->Void){
+    public func tryBookMark(with article: NewsArticle,email: String, completion: @escaping (Bool)->Void){
         let userEamil = email.replacingOccurrences(of: ".", with: "_").replacingOccurrences(of: "@", with: "_")
         let id = UUID().uuidString
         let data : [String : Any] = [
@@ -41,39 +43,45 @@ final class DatabaseManager {
                 
             }
     }
-    public func getScrapArticles(for email: String, completion: @escaping ([ScrapArticle])->Void){
-        let userEamil = email.replacingOccurrences(of: ".", with: "_").replacingOccurrences(of: "@", with: "_")
-        
-        databese
-            .collection("users")
-            .document(userEamil)
-            .collection("scraps")
-            .getDocuments { snapshot, error in
-                guard let documents = snapshot?.documents.compactMap({$0.data()}),
-                      error == nil else{
-                          print("document error")
-                          return
-                      }
-                
-                let ScrapArticles : [ScrapArticle] = documents.compactMap({dictionary in
-                    guard let id = dictionary["id"] as? String,
-                          let author = dictionary["author"] as? String,
-                          let title = dictionary["title"] as? String,
-                          let articleDescription = dictionary["articleDescription"] as? String,
-                          let url = dictionary["url"] as? String,
-                          let urlToImage = dictionary["urlToImage"] as? String,
-                          let publishedAt = dictionary["publishedAt"] as? String,
-                          let content = dictionary["content"] as? String else{
-                              print("dictionary error")
-                              return nil
+    public func getScrapArticles(for email: String)->Observable<[ScrapArticle]>{
+        return Observable.create { observer -> Disposable in
+            let userEamil = email.replacingOccurrences(of: ".", with: "_").replacingOccurrences(of: "@", with: "_")
+            self.databese
+                .collection("users")
+                .document(userEamil)
+                .collection("scraps")
+                .getDocuments { snapshot, error in
+                    guard let documents = snapshot?.documents.compactMap({$0.data()}),
+                          error == nil else{
+                              print("document error\(error)")
+                              return
                           }
                     
-                    
-                    let scrapArticle = ScrapArticle(id: id, author: author, title: title, articleDescription: articleDescription, url: url, urlToImage: urlToImage, publishedAt: publishedAt, content: content)
-                    return scrapArticle
-                })
-                completion(ScrapArticles)
-            }
+                    let ScrapArticles : [ScrapArticle] = documents.compactMap({dictionary in
+                        guard let id = dictionary["id"] as? String,
+                              let author = dictionary["author"] as? String,
+                              let title = dictionary["title"] as? String,
+                              let articleDescription = dictionary["articleDescription"] as? String,
+                              let url = dictionary["url"] as? String,
+                              let urlToImage = dictionary["urlToImage"] as? String,
+                              let publishedAt = dictionary["publishedAt"] as? String,
+                              let content = dictionary["content"] as? String else{
+                                  print("dictionary error")
+                                  return nil
+                              }
+                        
+                        
+                        let scrapArticle = ScrapArticle(id: id, author: author, title: title, articleDescription: articleDescription, url: url, urlToImage: urlToImage, publishedAt: publishedAt, content: content)
+                        return scrapArticle
+                    })
+                    observer.onNext(ScrapArticles)
+                    observer.onCompleted()
+                }
+            return Disposables.create()
+        }
+        
+        
+
     }
     public func deleteScrapArticle(email: String,id:String,completion: @escaping(Bool)->Void){
         let documentId = email

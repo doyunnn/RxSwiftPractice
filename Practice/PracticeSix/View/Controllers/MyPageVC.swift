@@ -22,8 +22,8 @@ class MyPageVC: UIViewController {
     private let userImage : UIImageView = {
        let image = UIImageView()
         image.image = UIImage(systemName: "person.fill")
-        image.tintColor = .systemGray6
-        image.layer.borderColor = UIColor.systemGray5.cgColor
+        image.tintColor = .lightGray
+        image.layer.borderColor = UIColor.lightGray.cgColor
         image.layer.borderWidth = 1
         image.layer.cornerRadius = 8
         image.layer.masksToBounds = true
@@ -38,12 +38,15 @@ class MyPageVC: UIViewController {
     }()
     private let line : UIView = {
        let view = UIView()
-        view.backgroundColor = .systemGray5
+        view.backgroundColor = .lightGray
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     private let bookMarkView : UIView = {
        let view = UIView()
+        view.layer.borderColor = UIColor.lightGray.cgColor
+        view.layer.borderWidth = 0.8
+        view.layer.masksToBounds = false
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -77,17 +80,20 @@ class MyPageVC: UIViewController {
         view.addSubview(myPageLabel)
         myPageLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
         myPageLabel.leftAnchor.constraint(equalTo: view.leftAnchor,constant: padding).isActive = true
+        myPageLabel.rightAnchor.constraint(equalTo: view.rightAnchor,constant: -padding).isActive = true
         
         view.addSubview(userImage)
         userImage.topAnchor.constraint(equalTo: myPageLabel.bottomAnchor,constant: padding).isActive = true
         userImage.leftAnchor.constraint(equalTo: view.leftAnchor,constant: padding).isActive = true
-        userImage.heightAnchor.constraint(equalToConstant: 100).isActive = true
-        userImage.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        userImage.heightAnchor.constraint(equalToConstant: 80).isActive = true
+        userImage.widthAnchor.constraint(equalToConstant: 80).isActive = true
         
         view.addSubview(userEmail)
-        userEmail.leftAnchor.constraint(equalTo: userImage.rightAnchor,constant: -10).isActive = true
+        userEmail.leftAnchor.constraint(equalTo: userImage.rightAnchor,constant: 10).isActive = true
         userEmail.rightAnchor.constraint(equalTo: view.rightAnchor,constant: -padding).isActive = true
         userEmail.bottomAnchor.constraint(equalTo: userImage.bottomAnchor).isActive = true
+        guard let email = viewModel.email else {return}
+        userEmail.text = email
         
         view.addSubview(line)
         line.topAnchor.constraint(equalTo: userImage.bottomAnchor,constant: padding).isActive = true
@@ -124,7 +130,7 @@ class MyPageVC: UIViewController {
     }
     
     @objc func didTapBookMarkList() {
-        let vc = BookMarkListVC()
+        let vc = ScrapListVC()
         vc.navigationItem.largeTitleDisplayMode = .never
         self.navigationController?.pushViewController(vc, animated: true)
     }

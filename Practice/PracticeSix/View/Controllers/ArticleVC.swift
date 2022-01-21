@@ -38,7 +38,7 @@ class ArticleVC: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private let tableView : UITableView = {
+    lazy var tableView : UITableView = {
        let view = UITableView()
         view.register(ArticleTableViewCell.self, forCellReuseIdentifier: ArticleTableViewCell.identifier)
         view.separatorStyle = .none
@@ -83,6 +83,7 @@ class ArticleVC: UIViewController {
      
     }
     func subscribe(){
+        
         if let headLineViewModel = headLineViewModel {
             bindTableView(observable: headLineViewModel.headLineNewsObservable)
             
@@ -112,12 +113,13 @@ class ArticleVC: UIViewController {
         }
         self.tableView.rx.didScroll
             .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { _ in
-                guard let header = self.tableView.tableHeaderView as? ArticleStretchyHeaderView else {
+            .subscribe(onNext: { [weak self] _ in
+                guard let header = self?.tableView.tableHeaderView as? ArticleStretchyHeaderView else {
                     return
                 }
-                header.scrollViewDidScroll(scrollView: self.tableView)
+                header.scrollViewDidScroll(scrollView: self!.tableView)
             }).disposed(by: disposeBag)
+        
     }
     
     // MARK : Hekpers
@@ -136,9 +138,10 @@ class ArticleVC: UIViewController {
                 }
                 self.headerView.headerView.setImage(with: image)
                 cell.configure(with: item)
-                cell.onBookMark = {
-                    self.headLineViewModel?.didTapBookMark()
-                    self.newsViewModel?.didTapBookMark()
+                cell.onScrap = {
+                    self.headLineViewModel?.didTapScrap(article: item,self)
+                    self.newsViewModel?.didTapScrap(article: item,self)
+                    
                 }
             }.disposed(by: disposeBag)
     }

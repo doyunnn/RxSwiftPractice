@@ -6,12 +6,17 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 class ArticleTableViewCell: UITableViewCell {
     //MARK : Propertise
     static let identifier = "ArticleTableViewCell"
     
-    var onBookMark : (()->Void)?
+    var onScrap : (()->Void)?
+    
+
+    
     
     lazy var sourceName : UILabel = {
         let label = UILabel()
@@ -59,10 +64,11 @@ class ArticleTableViewCell: UITableViewCell {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    private let bookMark : UIButton = {
+    private let scrapButton : UIButton = {
        let button = UIButton()
-        button.setImage(UIImage(systemName: "bookmark",withConfiguration: UIImage.SymbolConfiguration(pointSize: 18,weight: .medium)), for: .normal)
-        button.tintColor = .purple
+        button.setTitle("스크랩", for: .normal)
+        button.setTitleColor(.purple, for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
         button.addTarget(self, action: #selector(didTapBookMarkButton), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -86,11 +92,11 @@ class ArticleTableViewCell: UITableViewCell {
         sourceName.leftAnchor.constraint(equalTo: contentView.leftAnchor,constant: padding).isActive = true
         sourceName.topAnchor.constraint(equalTo: contentView.topAnchor,constant: padding).isActive = true
         
-        contentView.addSubview(bookMark)
-        bookMark.rightAnchor.constraint(equalTo: contentView.rightAnchor,constant: -5).isActive = true
-        bookMark.topAnchor.constraint(equalTo: contentView.topAnchor,constant: 0).isActive = true
-        bookMark.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        bookMark.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        contentView.addSubview(scrapButton)
+        scrapButton.rightAnchor.constraint(equalTo: contentView.rightAnchor,constant: -padding).isActive = true
+        scrapButton.topAnchor.constraint(equalTo: contentView.topAnchor,constant: 0).isActive = true
+        scrapButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        scrapButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
         
         contentView.addSubview(title)
         title.leftAnchor.constraint(equalTo: contentView.leftAnchor,constant: padding).isActive = true
@@ -119,6 +125,7 @@ class ArticleTableViewCell: UITableViewCell {
     }
     
     func configure(with model : NewsArticle){
+
         sourceName.text = model.source.name
         title.text = model.title
         author.text = model.author
@@ -128,7 +135,7 @@ class ArticleTableViewCell: UITableViewCell {
     
     //MARK : Helpers
     @objc func didTapBookMarkButton(){
-        onBookMark?()
+        onScrap?()
     }
     
 }

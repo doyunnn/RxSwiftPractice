@@ -143,15 +143,15 @@ extension MoreContentsVC : UITableViewDelegate, UITableViewDataSource {
         cell.selectionStyle = .none
         switch indexPath.section {
         case 0:
-            cell.viewModel.onNext(self.viewModel.appleNewsObservable.value[indexPath.row])
+            configureCellArticles(observableValue: self.viewModel.appleNewsObservable.value[indexPath.row], cell: cell)
         case 1:
-            cell.viewModel.onNext(self.viewModel.teslaNewsObservable.value[indexPath.row])
+            configureCellArticles(observableValue: self.viewModel.teslaNewsObservable.value[indexPath.row], cell: cell)
         case 2:
-            cell.viewModel.onNext(self.viewModel.bitcoinNewsObservable.value[indexPath.row])
+            configureCellArticles(observableValue: self.viewModel.bitcoinNewsObservable.value[indexPath.row], cell: cell)
         case 3:
-            cell.viewModel.onNext(self.viewModel.businessNewsObservable.value[indexPath.row])
+            configureCellArticles(observableValue: self.viewModel.businessNewsObservable.value[indexPath.row], cell: cell)
         case 4:
-            cell.viewModel.onNext(self.viewModel.techNewsObservable.value[indexPath.row])
+            configureCellArticles(observableValue: self.viewModel.techNewsObservable.value[indexPath.row], cell: cell)
         default : break
         }
         return cell
@@ -191,6 +191,12 @@ extension MoreContentsVC : UITableViewDelegate, UITableViewDataSource {
             topToggleView.update(for: .item5, sender: topToggleView.button5)
         }
 
+    }
+    func configureCellArticles(observableValue: NewsArticle,cell : NewsTableviewCell){
+        cell.viewModel.onNext(observableValue)
+        cell.onScrap = {
+            self.viewModel.didTapScrap(article: observableValue, self)
+        }
     }
 }
 extension MoreContentsVC : CustomToggleViewDelegate {

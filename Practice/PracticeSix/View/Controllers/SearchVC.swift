@@ -151,6 +151,10 @@ class SearchVC: UIViewController {
             .observe(on: MainScheduler.instance)
             .bind(to: tableView.rx.items(cellIdentifier: NewsTableviewCell.identifier, cellType: NewsTableviewCell.self)){ index, item, cell in
                 cell.configure(with: item)
+                cell.onScrap = {
+                    self.viewModel.didTapScrap(article: item, self)
+                    
+                }
             }.disposed(by: disposeBag)
         searchField.rx.controlEvent(.editingDidEndOnExit)
             .subscribe(onNext: { _ in

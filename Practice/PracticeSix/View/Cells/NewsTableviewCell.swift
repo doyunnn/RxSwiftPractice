@@ -15,7 +15,7 @@ class NewsTableviewCell: UITableViewCell {
       var viewModel = PublishSubject<NewsArticle>()
       var disposeBag = DisposeBag()
       
-      var onBookMark : (()->Void)?
+      var onScrap : (()->Void)?
     
       lazy var contentImage : UIImageView = {
          let view = UIImageView()
@@ -55,10 +55,11 @@ class NewsTableviewCell: UITableViewCell {
           label.translatesAutoresizingMaskIntoConstraints = false
           return label
       }()
-    private let bookMark : UIButton = {
+    private let scrapButton : UIButton = {
        let button = UIButton()
-        button.setImage(UIImage(systemName: "bookmark",withConfiguration: UIImage.SymbolConfiguration(pointSize: 18,weight: .medium)), for: .normal)
-        button.tintColor = .purple
+        button.setTitle("스크랩", for: .normal)
+        button.setTitleColor(.purple, for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
         button.addTarget(self, action: #selector(didTapBookMarkButton), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -91,15 +92,15 @@ class NewsTableviewCell: UITableViewCell {
         contentImage.heightAnchor.constraint(equalToConstant: 100).isActive = true
         contentImage.widthAnchor.constraint(equalToConstant: 100).isActive = true
           
-          contentView.addSubview(bookMark)
-          bookMark.rightAnchor.constraint(equalTo: contentView.rightAnchor,constant: -10).isActive = true
-          bookMark.topAnchor.constraint(equalTo: contentView.topAnchor,constant: 10).isActive = true
-          bookMark.widthAnchor.constraint(equalToConstant: 50).isActive = true
-          bookMark.heightAnchor.constraint(equalToConstant: 30).isActive = true
+          contentView.addSubview(scrapButton)
+        scrapButton.rightAnchor.constraint(equalTo: contentView.rightAnchor,constant: -10).isActive = true
+        scrapButton.topAnchor.constraint(equalTo: contentView.topAnchor,constant: 10).isActive = true
+        scrapButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        scrapButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
           
           contentView.addSubview(author)
           author.leftAnchor.constraint(equalTo: contentImage.rightAnchor,constant: 10).isActive = true
-          author.rightAnchor.constraint(equalTo: bookMark.leftAnchor,constant: -padding).isActive = true
+          author.rightAnchor.constraint(equalTo: scrapButton.leftAnchor,constant: -padding).isActive = true
           author.topAnchor.constraint(equalTo: contentView.topAnchor,constant: padding).isActive = true
           
           contentView.addSubview(title)
@@ -120,7 +121,6 @@ class NewsTableviewCell: UITableViewCell {
           content.bottomAnchor.constraint(equalTo: contentView.bottomAnchor,constant: -padding).isActive = true
       }
     func subscribe(){
-        
         viewModel
             .subscribe(onNext: { [weak self] article in
             guard let urlToImage = article.urlToImage,
@@ -145,6 +145,6 @@ class NewsTableviewCell: UITableViewCell {
         self.publishedAt.text = model.publishedAt
     }
     @objc func didTapBookMarkButton(){
-        onBookMark?()
+        onScrap?()
     }
 }
