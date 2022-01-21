@@ -34,7 +34,7 @@ class ScrapListVC: UIViewController {
     //MARK : Configure
     func dafaultConfigure(){
         navigationController?.navigationBar.tintColor = .black
-        title = "BookMarkList"
+        title = "ScrapList"
         view.backgroundColor = .white
         view.addSubview(tableView)
         tableView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true

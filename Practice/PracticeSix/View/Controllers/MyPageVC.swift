@@ -52,7 +52,7 @@ class MyPageVC: UIViewController {
     }()
     private let bookMarkLabel : UILabel = {
        let label = UILabel()
-        label.text = "내가 북마크한 리스트 보기"
+        label.text = "내가 스크랩한 리스트 보기"
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
